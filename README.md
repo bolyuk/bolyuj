@@ -11,7 +11,7 @@ The most basic functions for executing code
 Interpreter e = new Interpreter(null);
 //initialize the standard interpreter
 
-parse(code)
+e.parse(code)
 //parse the code
 
 BJobject _response = e.exec();
