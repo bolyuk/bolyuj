@@ -18,7 +18,7 @@ BJobject _response = e.exec();
 //execute
 
 if(_response.value != "")
-   Stringresult = _response.value;
+   String result = _response.value;
 // get the result
 
 e.clearParsedCode();
@@ -102,13 +102,13 @@ a = (5+6)
 you can also use statement instead of variable names:
 ```
 (a+5)=value
-// a5=value, returned value
+// a5=value, returned `value`
 ```
 oh, and do not forget that by the name of the variable, the value cannot be taken from it:
 ```
 a=5
 b = a+1
-//b=a1, returned a1
+//b=a1, returned `a1`
 ```
 it's also pretty important that ALL operators return a value:
 ```
