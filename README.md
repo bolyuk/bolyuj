@@ -1,30 +1,30 @@
-boluj - простой интерпретируемый язык, в данный момент интерпритатор которого существует только на Java.
+boluj is a simple interpreted language whose interpreter currently exists only in Java.
 
-Багованный и не полный. 
+Baggy and not complete.
 
-Использовать не рекомендуется.
+Use is not recommended.
 
-# Использования библиотеки в своих проектах
+# Using the library in your projects
 
-Самые основные функции для исполнения кода
+The most basic functions for executing code
 ```java
-Interpreter e = new Interpreter(null);  
-//инициализируем стандартный интерпретатор
+Interpreter e = new Interpreter(null);
+//initialize the standard interpreter
 
-e.parse(code)                           
-//парсим код
+parse(code)
+//parse the code
 
-BJobject _response = e.exec();          
-//выполняем
+BJobject _response = e.exec();
+//execute
 
-if(_response.value != "")               
-   String result = _response.value;     
-//получаем результат
+if(_response.value != "")
+   Stringresult = _response.value;
+// get the result
 
-e.clearParsedCode();                   
-//очищаем             
+e.clearParsedCode();
+//clear
 ```
-# Примеры кода
+# Code examples
 
 while
 ```
@@ -35,7 +35,7 @@ while:([condition, body]={
 ]:[0])
 });
 ```
-HashMap
+hashmap
 ```
 array~;
 
@@ -46,25 +46,25 @@ array:{
 };
 ```
 
-# Примитивы
+# Primitives
 
-number - целочисленные числа
+number - integer numbers
 
-string - стандартные строки
+string - standard strings
 
-logic - логическое значение
+logic - a boolean value
 
-class - класс, имеет внутренний контекст
+class - the class has an internal context
 
-exception - исключение, не оперируемый тип данных
+exception - an exception, not an operatable data type
 
-statement - условный метод, блок кода
+statement - conditional method, block of code
 
-function - функция, имеет внутренний контекст
+function - a function, has an internal context
 
-# Синтаксис
+# Syntax
 
-Для отделения блоков кода используются предопределенные символы:
+Predefined characters are used to separate blocks of code:
 ```
 ,
 ;
@@ -74,116 +74,116 @@ function - функция, имеет внутренний контекст
 (
 [
 {
-    //пробел и/или перенос на новую строку
+    //space and/or newline
 ```
-Вы можете использовать любой из этих символов, для вашего удобства. Так-же скобки используются для изменения порядка выполнения:
+You can use any of these symbols for your convenience. Parentheses are also used to change the order of execution:
 ```
-a = (3-6+7)   
-// возвращено:  4
+a = (3-6+7)
+// returned: 4
 
-a = (3-[6+7]) 
-// возвращено: -10
+a = (3-[6+7])
+// returned: -10
 ```
-К сожалению, из-за некоторых особенностей, Вам нужно будет использовать много скобок. поэтому всё скобки имеют одинаковую функцию:
+Unfortunately, due to some peculiarities, you will need to use a lot of parentheses. so all brackets have the same function:
 ```
-a = {3+(5+6]-6) 
-//так делать не рекомендуется, это просто пример
+a = {3+(5+6]-6)
+// not recommended, this is just an example
 ```
-Так-же, из-за некоторых особенностей, некоторое выполнение кода может показаться вам странным, к примеру:
+Also, due to some features, some code execution may seem strange to you, for example:
 ```
-a = 5+6         
-// a = 5, но возвращено будет 11
+a = 5+6
+// a = 5, but 11 will be returned
 ```
-это обусловлено тем, что всё операторы видят ТОЛЬКО ближайший statement и получается что оператор "=" видит только "а" и только "5", поэтому нужно ВСЕГДА использовать скобки:
+this is due to the fact that all operators see ONLY the nearest statement and it turns out that the "=" operator sees only "a" and only "5", so you need to ALWAYS use parentheses:
 ```
-a = (5+6)        
-//  а = 11, возвращено 11
+a = (5+6)
+// a = 11, returned 11
 ```
-так-же вы можете вместо названий переменных использовать так-же statement:
+you can also use statement instead of variable names:
 ```
-(a+5)=value      
-// a5=value, возвращено value
+(a+5)=value
+// a5=value, returned value
 ```
-ох, и не стоит забывать, что по названию переменной, значение из неё взять нельзя:
+oh, and do not forget that by the name of the variable, the value cannot be taken from it:
 ```
-a = 5
-b = a+1  
-//b=a1, возвращено a1
+a=5
+b = a+1
+//b=a1, returned a1
 ```
-так-же довольно важная вещь, что ВСЁ операторы возвращают значение:
+it's also pretty important that ALL operators return a value:
 ```
-a = (b+1) = 7  
-// a =b1, b1=7, возвращено 7
+a = (b+1) = 7
+// a =b1, b1=7, returned 7
 ```
-# Контекст
+# Context
 
-(!) Пожалуйста, читайте этот раздел после прочтения раздела "Операторы"
+(!) Please read this section after reading the "Operators" section
 
-Контекст или же class - пространство, в котором выполняется код. Бывает текущий контекст и верхний (у верхнего контекста тоже может быть верхний):
+Context or class - the space in which the code is executed. There is a current context and an upper one (the upper context can also have an upper one):
 ```
 a=5;
 b=3;
 c:(a~, a=6)
 ```
-и потом:
+and then:
 ```
-$a     
-// возвращено 5
+$a
+// returned 5
 
-c:($a) 
-// возвращено 6
+c:($a)
+// returned 6
 ```
-в случае, если в текущем контексте переменная не найдена, она будет искаться в верхнем контексте:
+if the variable is not found in the current context, it will be searched in the upper context:
 ```
-c:($b) 
-// возвращено 3
+c:($b)
+// returned 3
 ```
-Но существует проблема контекста - если вы инициализируете переменную, то она создается ТОЛЬКО в текущем контексте. Но эту проблему можно обойти:
+But there is a context problem - if you initialize a variable, then it is created ONLY in the current context. But this problem can be worked around:
 ```
 buf~
 s:([i,v]=[(buf=($i)), `($buf~), ($i=($v))])
 ```
-Оператор ` позволяет выполнять код ТОЛЬКО в верхнем контексте. Из-за этого нам понадобилось сделать буфферную переменную в верхнем контексте, записать в неё значение название переменной, которое нужно из нижнего контекста, и инициализировать значение из переменной(название), и после этого только присвоить значение. После этого мы можем вызвать нашу функцию:
+The ` operator allows code to be executed ONLY in the upper context. Because of this, we needed to make a buffer variable in the upper context, write to it the value of the variable name that is needed from the lower context, and initialize the value from the variable (name), and then only assign the value. After that we can call our function:
 ```
-s:[b,5] 
-// b=5, возвращено 5
+s:[b,5]
+// b=5, 5 returned
 ```
-Так или иначе, в классах и функциях контекст одинаковый. В функциях ВСЁ переменные статичные, тоесть:
+One way or another, in classes and functions, the context is the same. In functions, ALL variables are static, that is:
 ```
 f:([i]={
 [?([$b & ""]>[(b~), b=1]):(b=($b)+1)],
 [$i+($b)]
 })
 ```
-мы создали функцию, которая каждый раз при вызове, увеличивает значение b на 1 и прибавляет это значение ко входящему значению (на убогую проверку или существует переменная b просьба не смотреть). И получается:
+we have created a function that, each time it is called, increases the value of b by 1 and adds this value to the incoming value (please don’t look at a poor check or there is a variable b). And it turns out:
 ```
-f:(3) 
-//возвращено 5 ибо b=2
+f:(3)
+//returned 5 because b=2
 
-f:(3) 
-//возрващено 6 ибо b=3
+f:(3)
+//returned 6 because b=3
 
-f:(6) 
-//возвращено 10 ибо b=4
+f:(6)
+//returned 10 for b=4
 ```
-# Операторы
+# Operators
 
-Если вы не понимаете некоторые примеры кода - это нормально
-## Оператор инициализации
+If you don't understand some of the code examples, that's fine.
+## Initialization statement
 ```
-(statement1)~(необязательный statement2)
+(statement1)~(optional statement2)
 ```
-Примеры кода:
+Code examples:
 ```
-a~  
+a~
 s~(javaPath)
 ```
-(!) Инициализирует переменную или класс и возвращает ее.
-## Оператор присвоения 
+(!) Initializes a variable or class and returns it.
+## Assignment operator
 ```
 statement1 = statement2
 ```
-Примеры кода:
+Code examples:
 ```
 b = 3
 
@@ -191,48 +191,50 @@ a = (3+5-($b))
 
 f+($value)=(67*[s:($f)]-3
 ```
-(!)Присваивает значение переменной и возвращает его
-## Оператор взятия
+(!) Assigns a value to a variable and returns it
+## Take operator
 ```
 $statement1
 ```
-Пример кода:
+Code example:
 ```
 $s
-$(10-[$f]+b) 
+$(10-[$f]+b)
 ```
-(!)Возвращает значение переменной
-# Оператор прибавления
+(!) Returns the value of a variable
+# Add operator
 ```
 statement1 + statement2
 ```
-Поддерживаемые типы:
+Supported types:
 ```
 string + string
 number + number
 number + string
 string + number
 ```
-# Оператор вычитания
+# Subtraction operator
 ```
 statement1 - statement2
 ```
-Поддерживаемые типы:
+Supported types:
 ```
 number - number
 
-string - number  
-//подрезает строку на number символов
+string - number
+//truncate string by number characters
 ```
-## Оператор чтения текстового файла
+## Text file read statement
 ```
 ^statement1
 ```
-(!)Возвращает считанные данные из файла по пути statement1
-## Функциональный оператор
+(!)Returns the read data from the file along the path statement1
+## Function statement
 ```
 statement1:statement2
 ```
-Есть несколько вариаций для statement2, от которых зависит функционал оператора
+There are several variations for statement2, on which the functionality of the statement depends
 
-кодер слишком ленивый...
+
+
+the coder is too lazy, didn't finish the article...
