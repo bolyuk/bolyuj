@@ -21,9 +21,9 @@ public class Parser {
                 return null;
             } else {
                 _parsedStatements.add((BJStatement)r);
-                //System.out.println();
-                //DebugUtil.print((BJStatement)r);
-                //System.out.println();
+                System.out.println();
+                DebugUtil.print((BJStatement)r);
+                System.out.println();
             }
 
         }
@@ -50,28 +50,29 @@ public class Parser {
                         _result.add(new BJobject(_sbuf,"string"));
                         break;
                     case ')':
-                        if (_Cobj.value != "")
+                    case '}':
+                    case ']':
+                        if (!_Cobj.value.equals(""))
                             _result.add(_Cobj);
                         _result.value=String.valueOf(i);
                         return _result;
                     case ';':
-                        if (_Cobj.value != "")
+                    case ',':
+                    case ' ':
+                        if (!_Cobj.value.equals(""))
                             _result.add(_Cobj);
-                        _result.value=String.valueOf(i+1);
-                        return _result;
+                        _Cobj = new BJobject();
+                        break;
                     case '(':
-                        if (_Cobj.value != "")
+                    case '[':
+                    case '{':
+                        if (!_Cobj.value.equals(""))
                             _result.add(_Cobj);
                         _Cobj = new BJobject();
                         BJStatement _buf =(BJStatement) parseStatement(BJcode, i+1, context);
                         i=Integer.parseInt(_buf.value);
                         _buf.type="statement";
                         _result.add(_buf);
-                        break;
-                    case ' ':
-                        if (_Cobj.value != "")
-                            _result.add(_Cobj);
-                        _Cobj = new BJobject();
                         break;
                     default:
                         if (Character.isDigit(c)) {
@@ -81,15 +82,16 @@ public class Parser {
                         } else if (Character.isLetter(c)) {
                             _Cobj.value += c;
                             _Cobj.type = "variable";
-                        } else {
-                            if (_Cobj.value != "")
+                        } else if(c == '\n'){}
+                        else{
+                            if (!_Cobj.value.equals(""))
                                 _result.add(_Cobj);
                             _Cobj = new BJobject();
                             _result.add(new BJobject(String.valueOf(c), "operator"));
                         }
                 }
             }
-            if (_Cobj.value != "")
+            if (!_Cobj.value.equals(""))
                 _result.add(_Cobj);
             i++;
             _result.value=String.valueOf(i);

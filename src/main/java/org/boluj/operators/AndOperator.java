@@ -4,26 +4,28 @@ import org.boluj.Interpreter;
 import org.boluj.classes.BJException;
 import org.boluj.classes.BJobject;
 
-public class AssignmentOperator implements AbstractOperator{
+public class AndOperator implements AbstractOperator{
     @Override
     public boolean canExec(BJobject p, BJobject n) {
-        return p != null && n != null;
+        return (p != null && n != null);
     }
 
     @Override
     public String getOperator() {
-        return "=";
+        return "&";
     }
 
     @Override
     public BJobject exec(BJobject p, BJobject n, Interpreter context) {
         p = (p.isStatement())? p.getStatement(context):p;
         n = (n.isStatement())? n.getStatement(context):n;
-        try {
-            if(context.getVariable(p.value) != null && context.getVariable(p.value).isFinal)
-                return new BJException("variable "+p.value+" can not be modified");
-            return context.putVariable(p.value, n);
+        try{
+            if(p.isLogic() || n.isLogic())
+                return new BJobject(String.valueOf( p.getLogic() && n.getLogic()),"logic");
+            else
+                return new BJobject(String.valueOf(p.value.equals(n.value)),"logic");
+
         }catch (Exception err){}
-        return new BJException("can not execute [ "+p.type+" "+getOperator()+" "+n.type+" ]");
+        return new BJException("can not execute [ "+getOperator()+" "+n.type+" ]");
     }
 }

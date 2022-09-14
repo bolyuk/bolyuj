@@ -17,7 +17,16 @@ public class BJC {
                      new GrabeOperator(),
                      new MoreOperator(),
                      new LessOperator(),
-                     new ConditionOperator()
+                     new ConditionOperator(),
+                     new StatementExecOperator(),
+                     new StatementSaveOperator(),
+                     new InversionOperator(),
+                     new OrOperator(),
+                     new AndOperator(),
+                     new FunctionOperator(),
+                     new FileReadOperator(),
+                     new ClassOperator(),
+                     new UpperContextOperator()
              };
 
 }
