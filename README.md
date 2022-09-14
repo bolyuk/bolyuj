@@ -166,6 +166,7 @@ f:(3)
 f:(6)
 //returned 10 for b=4
 ```
+Also, in any context, you can create your own functions
 # Operators
 
 If you don't understand some of the code examples, that's fine.
@@ -202,7 +203,7 @@ $s
 $(10-[$f]+b)
 ```
 (!) Returns the value of a variable
-# Add operator
+## Add operator
 ```
 statement1 + statement2
 ```
@@ -213,7 +214,7 @@ number + number
 number + string
 string + number
 ```
-# Subtraction operator
+## Subtraction operator
 ```
 statement1 - statement2
 ```
@@ -229,12 +230,121 @@ string - number
 ^statement1
 ```
 (!)Returns the read data from the file along the path statement1
-## Function statement
+## Creating a function
+
+(!) This will only work if statement1 is not initialized as a class
 ```
-statement1:statement2
+statement1:(statement2=statement3)
 ```
-There are several variations for statement2, on which the functionality of the statement depends
+statement 2 - set of variables passed to the function
 
+statement3 - function body
+```
+s:([i,v,f]=[($f=($v+1)),($i=($i+1))])
 
+f:([i]=[$i+1])
+```
+## Function execution
 
-the coder is too lazy, didn't finish the article...
+(!) This will only work if statement1 is not initialized as a class
+```
+statement1:(statement2)
+```
+statement2 - set of variables
+```
+s:(a,3)
+f:()
+```
+## Class context
+
+(!) This will only work if statement1 is initialized as a class
+```
+statement1:(statement2)
+```
+statement2 - block of code to be executed inside the class
+```
+a:(b=6)
+b:(f:[], c = [$i+1])
+```
+## Parsing java functions
+```
+statement1:(statement2>statement3)
+```
+statement1 - function name, must match the name of the required java function
+
+statement2 - set of passed variables, should match the number of variables in the required java function
+
+statement3 - path to java class
+```
+read:([s]>["org.boluj.DFile"])
+```
+## Saving the code
+```
+@statement1
+```
+Allows you to pass statement1 without executing
+```
+r:[@($i+1)]
+```
+## Code execution
+```
+#statement1
+```
+Allows to execute statement1 if it is a string or a saved statement
+```
+r:[(i)=(?[($i < 10)>[#($i)]:[0]])]
+```
+## Upper context
+```
+`statement1
+```
+executes statement1 in the top context
+## Fork
+```
+?([statement1]>[statement2])
+
+?([statement1]>[statement2]:[statement3])
+```
+statement1 - condition
+
+statement2 - block of code, executed if the condition is true
+
+statement3 - block of code, executed if the condition is not true
+## Multiplication operator
+```
+statement1*statement2
+```
+Supported types:
+```
+string*number
+number * number
+```
+## Division operator
+```
+statement1/statement2
+```
+Supported types:
+```
+number / number
+```
+## Comparison operator
+```
+statement1 & statement2
+```
+if statement1 or statement2 is logic, then it works like a logical AND otherwise it compares the values of both for equality.
+## logical OR
+```
+statement1 | statement2
+```
+## Logical NOT
+```
+!statement1
+```
+## greater than operator
+```
+statement1 > statement2
+```
+## Less than operator
+```
+statement1 < statement2
+```
